@@ -92,6 +92,9 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.actionScan.setText(_translate("MainWindow", "Scan"))
+        self.actionScan.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
+        self.actionExit.setShortcut(_translate("MainWindow", "Ctrl+E"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
+        self.actionAbout.setShortcut(_translate("MainWindow", "Ctrl+A"))
 
