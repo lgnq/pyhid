@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 
 from mainwindow import Ui_MainWindow
 
+
 class Thread(QtCore.QThread):
     msg_ready = QtCore.pyqtSignal(list)
 
@@ -25,6 +26,7 @@ class Thread(QtCore.QThread):
 
                 self.msg_ready.emit(msg)
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent = None):
         super(MainWindow, self).__init__(parent)
@@ -40,8 +42,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.baudrate_combobox.currentIndexChanged.connect(self.baudrate_change)
         self.open_pushbutton.clicked.connect(self.device_openclose)
 
-        # self.thread = Thread(self.queue_monitor)
-        # self.thread.msg_ready.connect(self.rx_textbrowser_update)
+        self.thread = Thread(self.queue_monitor)
+        self.thread.msg_ready.connect(self.rx_textbrowser_update)
         # self.thread.start()
 
     def queue_monitor(self):
@@ -148,8 +150,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.all_devices = hid.HidDeviceFilter(vendor_id=0x10C4, product_id=0xEA80).get_devices()
 
         for i in self.all_devices:
-            id_information = "vId= 0x{0:04X}, pId= 0x{1:04X}, ppId= 0x{2:04X}".format(i.vendor_id, i.product_id,
-                                                                                      i.parent_instance_id)
+            id_information = "vId= 0x{0:04X}, pId= 0x{1:04X}, ppId= 0x{2:04X}".format(i.vendor_id, i.product_id, i.parent_instance_id)
             self.device_combobox.addItem(id_information)
 
         if self.all_devices:
@@ -202,6 +203,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.uart_onoff(1)
             self.uart_config(self.baudrate_combobox.currentIndex())
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
