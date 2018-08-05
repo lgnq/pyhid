@@ -27,7 +27,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox"/>
+         <widget class="QComboBox" name="device_combobox"/>
         </item>
         <item>
          <widget class="QLabel" name="label_2">
@@ -37,7 +37,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="baudrate_combobox">
           <item>
            <property name="text">
             <string>9600</string>
@@ -56,14 +56,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="open_pushbutton">
           <property name="text">
            <string>Open</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="clear_pushbutton">
           <property name="text">
            <string>Clear</string>
           </property>
@@ -85,7 +85,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QTextBrowser" name="textBrowser">
+       <widget class="QTextBrowser" name="rx_textbrowser">
         <property name="font">
          <font>
           <family>Courier New</family>
@@ -151,9 +151,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>clear_pushbutton</sender>
    <signal>clicked()</signal>
-   <receiver>textBrowser</receiver>
+   <receiver>rx_textbrowser</receiver>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
