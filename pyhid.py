@@ -76,7 +76,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMessageBox.question(self, 'About', "CP2110 USB-to-UART\r\nVersion: 1.0\r\nAuthor: lgnq", QMessageBox.Ok, QMessageBox.Ok)
 
     def scan(self):
-        print("scan the HID device")
+        print("todo: scan the HID device")
         # self.widget.device_scan()
 
     def report_recv_handler(self, data):
@@ -152,12 +152,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.hid_device.send_feature_report(buff)
 
     def device_scan(self):
-        self.device_combobox.__init__()
+        # self.device_combobox.__init__()
 
         self.all_devices = hid.HidDeviceFilter(vendor_id=0x10C4, product_id=0xEA80).get_devices()
 
         for i in self.all_devices:
             id_information = "vId= 0x{0:04X}, pId= 0x{1:04X}, ppId= 0x{2:04X}".format(i.vendor_id, i.product_id, i.parent_instance_id)
+            print("add item" + id_information)
             self.device_combobox.addItem(id_information)
 
         if self.all_devices:
