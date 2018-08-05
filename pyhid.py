@@ -67,7 +67,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if item[0] == 1:
             if item[1] == 10:
                 self.textBrowser.append(self.string)
-                self.bar.setValue(self.bar.maximum())
+                # self.bar.setValue(self.bar.maximum())
                 self.string = ""
             elif item[1] != 13:
                 self.string = self.string + chr(item[1])
@@ -101,7 +101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if self.previous_device != self.current_device:
             self.open_pushbutton.setText("Open")
-            self.status_label.setText("Status: ")
+            self.statusbar.clearMessage()
         else:
             if self.hid_device.is_opened():
                 self.open_pushbutton.setText("Close")
@@ -182,13 +182,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.hid_device.set_raw_data_handler(self.report_recv_handler)
                 self.reports = self.hid_device.find_output_reports()
                 self.feature_report = self.hid_device.find_feature_reports()
-                # in_reports   = self.hid_device.find_input_reports()
 
                 self.uart_onoff(1)
                 self.uart_config(self.baudrate_combobox.currentIndex())
-
-                # for i in self.feature_report:
-                #     print(i.get(False))
 
                 self.statusbar.showMessage('Status: ' + self.hid_device.product_name + ' ' + self.hid_device.vendor_name + ' ' + self.hid_device.serial_number)
                 print(self.hid_device, "opend")
@@ -205,8 +201,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.hid_device.set_raw_data_handler(self.report_recv_handler)
             self.reports = self.hid_device.find_output_reports()
             self.feature_report = self.hid_device.find_feature_reports()
-
-            # in_reports   = self.hid_device.find_input_reports()
 
             self.uart_onoff(1)
             self.uart_config(self.baudrate_combobox.currentIndex())
