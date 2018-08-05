@@ -1,4 +1,6 @@
 import sys
+import queue
+import pywinusb
 
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
@@ -34,6 +36,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(self.about)
 
         self.pushButton.clicked.connect(self.openclose)
+
+        # self.thread = Thread(self.queue_monitor)
+        # self.thread.msg_ready.connect(self.rx_textbrowser_update)
+        # self.thread.start()
+
+    def queue_monitor(self):
+        if self.queue.qsize():
+            try:
+                msgs = self.queue.get()
+                return msgs
+
+            except queue.Empty:
+                pass
+
+    string = ""
+    def rx_textbrowser_update(self, item):
+        if (item[0] == 1):
+            if (item[1] == 10):
+                self.textBrowser.append(self.string)
+                self.bar.setValue(self.bar.maximum())
+                self.string = ""
+            elif (item[1] != 13):
+                self.string = self.string + chr(item[1])
 
     def about(self):
         QMessageBox.question(self, 'About', "CP2110 USB-to-UART\r\nVersion: 1.0\r\nAuthor: lgnq", QMessageBox.Ok, QMessageBox.Ok)
