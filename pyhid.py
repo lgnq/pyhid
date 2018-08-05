@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 
 from mainwindow import Ui_MainWindow
 
@@ -29,7 +29,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
 
+        self.actionScan.triggered.connect(self.scan)
+        self.actionExit.triggered.connect(self.close)
+        self.actionAbout.triggered.connect(self.about)
+
         self.pushButton.clicked.connect(self.openclose)
+
+    def about(self):
+        QMessageBox.question(self, 'About', "CP2110 USB-to-UART\r\nVersion: 1.0\r\nAuthor: lgnq", QMessageBox.Ok, QMessageBox.Ok)
+
+    def scan(self):
+        print("scan the HID device")
+        # self.widget.device_scan()
 
     def openclose(self):
         print("open or close")
