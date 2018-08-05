@@ -158,7 +158,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         for i in self.all_devices:
             id_information = "vId= 0x{0:04X}, pId= 0x{1:04X}, ppId= 0x{2:04X}".format(i.vendor_id, i.product_id, i.parent_instance_id)
-            print("add item" + id_information)
             self.device_combobox.addItem(id_information)
 
         if self.all_devices:
