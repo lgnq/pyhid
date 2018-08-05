@@ -41,6 +41,7 @@ class Ui_MainWindow(object):
         self.baudrate_combobox.addItem("")
         self.horizontalLayout.addWidget(self.baudrate_combobox)
         self.open_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.open_pushbutton.setEnabled(True)
         self.open_pushbutton.setObjectName("open_pushbutton")
         self.horizontalLayout.addWidget(self.open_pushbutton)
         self.clear_pushbutton = QtWidgets.QPushButton(self.centralwidget)

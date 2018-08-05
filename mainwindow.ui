@@ -64,6 +64,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="open_pushbutton">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Open</string>
           </property>

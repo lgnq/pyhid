@@ -127,6 +127,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.device_combobox.currentIndexChanged.connect(self.device_change)
 
+        if self.device_combobox.count() == 0:
+            self.open_pushbutton.setEnabled(False)
+            self.clear_pushbutton.setEnabled(False)
+            self.baudrate_combobox.setEnabled(False)
+        else:
+            self.open_pushbutton.setEnabled(True)
+            self.clear_pushbutton.setEnabled(True)
+            self.baudrate_combobox.setEnabled(True)
+
     def device_openclose(self):
         if self.device_combobox.count() == 0:
             self.statusbar.showMessage('no CP2110 device detected')
