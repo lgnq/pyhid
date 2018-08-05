@@ -95,7 +95,8 @@
        <widget class="QTextBrowser" name="rx_textbrowser">
         <property name="font">
          <font>
-          <family>Courier New</family>
+          <family>Consolas</family>
+          <pointsize>10</pointsize>
          </font>
         </property>
        </widget>
