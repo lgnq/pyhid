@@ -187,7 +187,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.uart_config(self.baudrate_combobox.currentIndex())
 
                 self.statusbar.showMessage('Status: ' + self.hid_device.product_name + ' ' + self.hid_device.vendor_name + ' ' + self.hid_device.serial_number)
-                print(self.hid_device, "opend")
+                print(self.hid_device, "Opened")
 
                 self.open_pushbutton.setText("Close")
         else:
