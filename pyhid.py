@@ -33,6 +33,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
 
+        self.current_device = 0  # 当前设备编号
+        self.previous_device = 0  # 之前设备编号
+
+        self.hid_device = None  # 设备
+
+        self.queue = queue.Queue()  # 创建队列
+
         self.actionScan.triggered.connect(self.scan)
         self.actionExit.triggered.connect(self.close)
         self.actionAbout.triggered.connect(self.about)
@@ -44,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.thread = Thread(self.queue_monitor)
         self.thread.msg_ready.connect(self.rx_textbrowser_update)
-        # self.thread.start()
+        self.thread.start()
 
     def queue_monitor(self):
         if self.queue.qsize():
@@ -57,12 +64,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     string = ""
     def rx_textbrowser_update(self, item):
-        if (item[0] == 1):
-            if (item[1] == 10):
+        if item[0] == 1:
+            if item[1] == 10:
                 self.textBrowser.append(self.string)
                 self.bar.setValue(self.bar.maximum())
                 self.string = ""
-            elif (item[1] != 13):
+            elif item[1] != 13:
                 self.string = self.string + chr(item[1])
 
     def about(self):
