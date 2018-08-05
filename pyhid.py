@@ -51,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.thread = Thread(self.queue_monitor)
         self.thread.msg_ready.connect(self.rx_textbrowser_update)
-        self.thread.start()
+        # self.thread.start()
 
     def queue_monitor(self):
         if self.queue.qsize():
