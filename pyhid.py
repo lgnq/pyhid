@@ -13,7 +13,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
 
-        self.current_device = 0  # 当前设备编号
+        self.current_device  = 0  # 当前设备编号
         self.previous_device = 0  # 之前设备编号
 
         self.hid_device = None  # 设备
@@ -137,7 +137,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.hid_device.is_opened():
                 self.hid_device.close()
                 self.open_pushbutton.setText("Open")
-                print(self.hid_device, "Closed")
                 self.statusbar.clearMessage()
             else:
                 self.hid_device.open()
@@ -149,17 +148,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.uart_config(self.baudrate_combobox.currentIndex())
 
                 self.statusbar.showMessage('Status: ' + self.hid_device.product_name + ' ' + self.hid_device.vendor_name + ' ' + self.hid_device.serial_number)
-                print(self.hid_device, "Opened")
 
                 self.open_pushbutton.setText("Close")
         else:
             self.hid_device.close()
-            print(self.hid_device, "Closed")
-
             self.hid_device = self.all_devices[self.current_device]
             self.previous_device = self.current_device
             self.hid_device.open()
-            print(self.hid_device, "Opened")
             self.hid_device.set_raw_data_handler(self.report_recv_handler)
             self.reports = self.hid_device.find_output_reports()
             self.feature_report = self.hid_device.find_feature_reports()
