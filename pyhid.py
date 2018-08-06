@@ -72,7 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             except queue.Empty:
                 pass
 
-    def rx_textbrowser_update(self, item):
+    def rx_textbrowser_update(self, item):           
         if (item[0] == 1):
             if (item[1] != 13):
                 self.rx_textbrowser.insertPlainText(chr(item[1]))    
@@ -87,7 +87,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #         self.receive_buff = self.receive_buff + chr(item[1])
 
     def report_recv_handler(self, data):
-        self.queue.put(data)
+        self.queue.put(data[0:2])
+        
         # if data[0] == 1:
         #     if data[1] == 10:
         #         self.rx_textbrowser.append(self.receive_buff)
