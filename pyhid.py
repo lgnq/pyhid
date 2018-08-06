@@ -3,6 +3,7 @@ import pywinusb.hid as hid
 
 # from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PyQt5.QtGui import QTextCursor
 
 from mainwindow import Ui_MainWindow
 
@@ -40,6 +41,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if data[0] == 1:
             if data[1] == 10:
                 self.rx_textbrowser.append(self.receive_buff)
+                self.rx_textbrowser.moveCursor(QTextCursor.End)
                 self.receive_buff = ""
             elif data[1] != 13:
                 self.receive_buff = self.receive_buff + chr(data[1])
