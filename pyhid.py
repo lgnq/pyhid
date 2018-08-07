@@ -54,7 +54,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.thread = Thread(self.queue_monitor)
         self.thread.msg_ready.connect(self.rx_textbrowser_update)
-        self.thread.start()
+        # self.thread.start()
 
     def about(self):
         QMessageBox.question(self, 'About', "CP2110 USB-to-UART\r\nVersion: 1.0\r\nAuthor: lgnq", QMessageBox.Ok, QMessageBox.Ok)
@@ -170,6 +170,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def device_openclose(self):
         if self.hid_device.is_opened():
+            self.thread.quit()
+
             self.hid_device.close()
             self.open_pushbutton.setText("Open")
             self.device_combobox.setEnabled(True)
@@ -177,6 +179,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.statusbar.clearMessage()
         else:
+            self.thread.start()
+
             self.hid_device.open()
             self.open_pushbutton.setText("Close")
             self.device_combobox.setEnabled(False)
