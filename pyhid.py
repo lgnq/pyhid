@@ -49,7 +49,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.device_scan()
 
-        self.baudrate_combobox.currentIndexChanged.connect(self.baudrate_change)
         self.open_pushbutton.clicked.connect(self.device_openclose)
 
         self.thread = Thread(self.queue_monitor)
@@ -88,14 +87,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def report_recv_handler(self, data):
         self.queue.put(data[0:2])
-
-    def baudrate_change(self):
-        if self.device_combobox.count() == 0:
-            self.statusbar.showMessage('no CP2110 device detected')
-            return
-
-        if (self.hid_device.is_opened()):
-            self.uart_config(self.baudrate_combobox.currentIndex())
 
     def device_change(self):
         self.hid_device = self.all_devices[self.device_combobox.currentIndex()]
