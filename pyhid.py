@@ -88,35 +88,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def report_recv_handler(self, data):
         self.queue.put(data[0:2])
-        
-        # if data[0] == 1:
-        #     if data[1] == 10:
-        #         self.rx_textbrowser.append(self.receive_buff)
-        #         self.rx_textbrowser.moveCursor(QTextCursor.End)
-        #         self.receive_buff = ""
-        #     elif data[1] != 13:
-        #         self.receive_buff = self.receive_buff + chr(data[1])
-
-            # #先把光标移到到最后
-            # cursor = self.rx_textbrowser.textCursor()
-            # if (cursor != cursor.End):
-            #     cursor.movePosition(cursor.End)
-            #     self.rx_textbrowser.setTextCursor(cursor)
-            
-            # #把字符串显示到窗口中去    
-            # self.rx_textbrowser.insertPlainText(chr(data[1]))    
-            
-            # #统计接收字符的数量
-            # # self.receive_num = self.receive_num + num
-            # # dis = '发送：'+ '{:d}'.format(self.send_num) + '  接收:' + '{:d}'.format(self.receive_num)
-            # # self.statusBar.showMessage(dis)
-            
-            # #获取到text光标
-            # textCursor = self.rx_textbrowser.textCursor()
-            # #滚动到底部
-            # textCursor.movePosition(textCursor.End)
-            # #设置光标到text中去
-            # self.rx_textbrowser.setTextCursor(textCursor)
 
     def baudrate_change(self):
         if self.device_combobox.count() == 0:
