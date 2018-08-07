@@ -2,18 +2,18 @@ import sys
 import queue
 import pywinusb.hid as hid
 
-from PyQt5 import QtCore
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtGui import QTextCursor
 
 from mainwindow import Ui_MainWindow
 
 
-class Thread(QtCore.QThread):
-    msg_ready = QtCore.pyqtSignal(list)
+class Thread(QThread):
+    msg_ready = pyqtSignal(list)
 
     def __init__(self, func):
-        super(QtCore.QThread, self).__init__()
+        super(QThread, self).__init__()
         self.func = func
 
     def run(self):
