@@ -39,7 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.hid_device = None  # 设备
 
-        self.receive_buff = " "
+        # self.receive_buff = " "
 
         self.queue = queue.Queue()  # 创建队列
 
@@ -98,22 +98,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.uart_config(self.baudrate_combobox.currentIndex())
 
     def device_change(self):
-        print("device_change")
-
-        if self.device_combobox.count() == 0:
-            self.statusbar.showMessage('no CP2110 device detected')
-            return
-
-        self.current_device = self.device_combobox.currentIndex()  # 获取当前设备索引号
-
-        if self.previous_device != self.current_device:
-            self.open_pushbutton.setText("Open")
-            self.statusbar.clearMessage()
-        else:
-            if self.hid_device.is_opened():
-                self.open_pushbutton.setText("Close")
-            else:
-                self.open_pushbutton.setText("Open")
+        self.hid_device = self.all_devices[self.device_combobox.currentIndex()]
 
     def uart_onoff(self, onoff):
         buff = [0x00] * 64
@@ -168,7 +153,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.device_combobox.addItem(id_information)
 
         if self.all_devices:
-            self.hid_device = self.all_devices[self.current_device]
+            self.hid_device = self.all_devices[self.device_combobox.currentIndex()]
 
         self.device_combobox.currentIndexChanged.connect(self.device_change)
 
@@ -184,39 +169,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.baudrate_combobox.setEnabled(True)
 
     def device_openclose(self):
-        if self.device_combobox.count() == 0:
-            self.statusbar.showMessage('no CP2110 device detected')
-            return
-
-        # 与之前选择的设备相同
-        if self.previous_device == self.current_device:
-            if self.hid_device.is_opened():
-                self.hid_device.close()
-                self.open_pushbutton.setText("Open")
-                self.statusbar.clearMessage()
-            else:
-                self.hid_device.open()
-                self.hid_device.set_raw_data_handler(self.report_recv_handler)
-                self.reports = self.hid_device.find_output_reports()
-                self.feature_report = self.hid_device.find_feature_reports()
-
-                self.uart_onoff(1)
-                self.uart_config(self.baudrate_combobox.currentIndex())
-
-                self.statusbar.showMessage('Status: ' + self.hid_device.product_name + ' ' + self.hid_device.vendor_name + ' ' + self.hid_device.serial_number)
-
-                self.open_pushbutton.setText("Close")
-        else:
+        if self.hid_device.is_opened():
             self.hid_device.close()
-            self.hid_device = self.all_devices[self.current_device]
-            self.previous_device = self.current_device
+            self.open_pushbutton.setText("Open")
+            self.device_combobox.setEnabled(True)
+            self.baudrate_combobox.setEnabled(True)
+
+            self.statusbar.clearMessage()
+        else:
             self.hid_device.open()
+            self.open_pushbutton.setText("Close")
+            self.device_combobox.setEnabled(False)
+            self.baudrate_combobox.setEnabled(False)
+        
             self.hid_device.set_raw_data_handler(self.report_recv_handler)
-            self.reports = self.hid_device.find_output_reports()
             self.feature_report = self.hid_device.find_feature_reports()
 
             self.uart_onoff(1)
             self.uart_config(self.baudrate_combobox.currentIndex())
+
+            self.statusbar.showMessage('Open ' + self.hid_device.product_name + ' ' + self.hid_device.vendor_name + ' ' + self.hid_device.serial_number)
 
 
 if __name__ == "__main__":
