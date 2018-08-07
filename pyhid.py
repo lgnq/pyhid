@@ -102,11 +102,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.hid_device.send_feature_report(buff)
 
-    def uart_config(self, baudrate_idx):
+    def uart_config(self, baudrate_idx, parity_idx, flowcontrol_idx, databits_idx, stopbits_idx):
+    # def uart_config(self, baudrate_idx):
         buff = [0x00] * 64
         buff[0] = 0x50  # Report ID = 0x41 Get/Set UART Enable
 
-        if baudrate_idx == 0:  # 9600
+        if baudrate_idx == 0:    # 9600
             buff[1] = 0x0
             buff[2] = 0x0
             buff[3] = 0x25
@@ -121,16 +122,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             buff[2] = 0x01
             buff[3] = 0xC2
             buff[4] = 0x00
-        else:  # 9600
+        else:                    # 9600
             buff[1] = 0x0
             buff[2] = 0x0
             buff[3] = 0x25
             buff[4] = 0x80
 
-        buff[5] = 0x0
-        buff[6] = 0x0
-        buff[7] = 0x3
-        buff[8] = 0x0
+        buff[5] = parity_idx
+        buff[6] = flowcontrol_idx
+        buff[7] = databits_idx
+        buff[8] = stopbits_idx
 
         self.hid_device.send_feature_report(buff)
 
@@ -140,24 +141,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.all_devices = hid.HidDeviceFilter(vendor_id=0x10C4, product_id=0xEA80).get_devices()
 
         for i in self.all_devices:
-            id_information = "vId= 0x{0:04X}, pId= 0x{1:04X}, ppId= 0x{2:04X}".format(i.vendor_id, i.product_id, i.parent_instance_id)
+            id_information = "0x{0:04X}".format(i.parent_instance_id)
             self.device_combobox.addItem(id_information)
 
         if self.all_devices:
+            self.setting.setEnabled(True)
+            
             self.hid_device = self.all_devices[self.device_combobox.currentIndex()]
+        else:
+            self.setting.setEnabled(False)
 
         self.device_combobox.currentIndexChanged.connect(self.device_change)
 
-        if self.device_combobox.count() == 0:
-            self.statusbar.showMessage('no CP2110 device detected')
+        # if self.device_combobox.count() == 0:
+        #     self.statusbar.showMessage('no CP2110 device detected')
             
-            self.open_pushbutton.setEnabled(False)
-            self.clear_pushbutton.setEnabled(False)
-            self.baudrate_combobox.setEnabled(False)
-        else:
-            self.open_pushbutton.setEnabled(True)
-            self.clear_pushbutton.setEnabled(True)
-            self.baudrate_combobox.setEnabled(True)
+        #     self.open_pushbutton.setEnabled(False)
+        #     self.clear_pushbutton.setEnabled(False)
+        #     self.baudrate_combobox.setEnabled(False)
+        # else:
+        #     self.open_pushbutton.setEnabled(True)
+        #     self.clear_pushbutton.setEnabled(True)
+        #     self.baudrate_combobox.setEnabled(True)
 
     def device_openclose(self):
         if self.hid_device.is_opened():
@@ -165,8 +170,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.hid_device.close()
             self.open_pushbutton.setText("Open")
+
             self.device_combobox.setEnabled(True)
             self.baudrate_combobox.setEnabled(True)
+            self.parity_combobox.setEnabled(True)
+            self.flowcontrol_combobox.setEnabled(True)
+            self.databits_combobox.setEnabled(True)
+            self.stopbits_combobox.setEnabled(True)
 
             self.statusbar.clearMessage()
         else:
@@ -174,14 +184,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.hid_device.open()
             self.open_pushbutton.setText("Close")
+
             self.device_combobox.setEnabled(False)
             self.baudrate_combobox.setEnabled(False)
-        
+            self.parity_combobox.setEnabled(False)
+            self.flowcontrol_combobox.setEnabled(False)
+            self.databits_combobox.setEnabled(False)
+            self.stopbits_combobox.setEnabled(False)
+
             self.hid_device.set_raw_data_handler(self.report_recv_handler)
             self.feature_report = self.hid_device.find_feature_reports()
 
             self.uart_onoff(1)
-            self.uart_config(self.baudrate_combobox.currentIndex())
+            self.uart_config(self.baudrate_combobox.currentIndex(), self.parity_combobox.currentIndex(), self.flowcontrol_combobox.currentIndex(), self.databits_combobox.currentIndex(), self.stopbits_combobox.currentIndex())
 
             self.statusbar.showMessage('Open ' + self.hid_device.product_name + ' ' + self.hid_device.vendor_name + ' ' + self.hid_device.serial_number)
 
