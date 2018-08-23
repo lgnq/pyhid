@@ -65,6 +65,11 @@
            </item>
            <item>
             <property name="text">
+             <string>19200</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>38400</string>
             </property>
            </item>
@@ -231,7 +236,6 @@
         <zorder>databits_combobox</zorder>
         <zorder>label_5</zorder>
         <zorder>stopbits_combobox</zorder>
-        <zorder>device_combobox</zorder>
         <zorder>label</zorder>
         <zorder>device_combobox</zorder>
         <zorder>open_pushbutton</zorder>

@@ -112,12 +112,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             buff[2] = 0x0
             buff[3] = 0x25
             buff[4] = 0x80
-        elif baudrate_idx == 1:  # 38400
+        elif baudrate_idx == 1:  # 19200
+            buff[1] = 0x0
+            buff[2] = 0x0
+            buff[3] = 0x4B
+            buff[4] = 0x00
+        elif baudrate_idx == 2:  # 38400
             buff[1] = 0x0
             buff[2] = 0x0
             buff[3] = 0x96
             buff[4] = 0x00
-        elif baudrate_idx == 2:  # 115200
+        elif baudrate_idx == 3:  # 115200
             buff[1] = 0x0
             buff[2] = 0x01
             buff[3] = 0xC2
