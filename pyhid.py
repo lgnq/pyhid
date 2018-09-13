@@ -74,6 +74,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def rx_textbrowser_update(self, item):           
         if (item[0] == 1):
             if (item[1] != 13):
+                # print(chr(item[1]), end='')
                 self.rx_textbrowser.insertPlainText(chr(item[1]))    
                 self.rx_textbrowser.moveCursor(QTextCursor.End)
 
@@ -87,6 +88,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def report_recv_handler(self, data):
         self.queue.put(data[0:2])
+        if (data[0] == 1):
+            print(chr(data[1]), end='')
 
     def device_change(self):
         self.hid_device = self.all_devices[self.device_combobox.currentIndex()]
@@ -185,7 +188,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.statusbar.clearMessage()
         else:
-            self.thread.start()
+            # self.thread.start()
 
             self.hid_device.open()
             self.open_pushbutton.setText("Close")
